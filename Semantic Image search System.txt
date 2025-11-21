@@ -1,0 +1,129 @@
+https://github.com/sunnysavita10/Finetuning-on-aws/tree/main
+
+
+Enterprises want to leverage Large Language Models (LLMs) for domain-specific tasks (summarization, Q&A, report generation, chatbot, etc.) —
+but training and hosting these models is expensive, complex, and not scalable using traditional servers.
+
+There’s a need for a cost-efficient, serverless, and maintainable LLM solution that can:
+be fine-tuned on custom enterprise data (knowledge bases, PDFs, reports, FAQs),
+serve predictions on demand via APIs,
+and log usage automatically for analytics and model improvement —
+all without manual infrastructure management or continuous compute costs.
+
+server less llm Application with fine tuning on aws sagemaker and deployment using lambda ,api gateway,s3 and dynamo DB
+************************************************************************************************************************
+
+project starts:
+
+create a role inside  iam
+
+                                                            Step 1: Create IAM Roles
+
+We’ll create two roles:
+	https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/roles
+
+
+You can write custom name
+A. Create SageMaker role
+a. Go to AWS Console → IAM → Roles → Create Role
+b. Choose AWS Service → SageMaker
+
+• SageMakerLLMRole
+	https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/roles/details/SageMakerLLMRole
+
+	role me-SageMakerLLMRole 
+	Add policies
+	c. Attach policies:
+	AmazonS3FullAccess
+	AmazonSageMakerFullAccess
+	CloudWatchFullAccess
+
+
+• LambdaInvokeLLMRole
+	role name-LambdaInvokeLLMRole
+	https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/roles/details/LambdaInvokeLLMRole
+
+
+	B. Create Lambda role
+	a. Go to AWS Console → IAM → Roles → Create Role
+	b. Choose AWS Service → Lambda
+	c. Attach policies:
+	AmazonSageMakerFullAccess
+	AmazonDynamoDBFullAccess
+	AmazonS3FullAccess
+	CloudWatchLogsFullAccess
+
+
+						STEP 2 — Create S3 Buckets for Dataset & Model Artifacts
+
+
+	
+1. First bucket for dataset storage
+2. Second bucket for model artifacts (after training, SageMaker will save the model)
+
+
+1. AWS Console → S3 → “Create bucket”
+2. Bucket name: llm-finetune-dataset-<yourname>
+3. Region = same as your SageMaker region (e.g., ap-south-1)
+4. Create a bucket
+
+
+bucket name 1 -
+
+	llm-finetune-dataset-krish0195
+		folder name:datasets
+
+	https://us-east-1.console.aws.amazon.com/s3/buckets/llm-finetune-dataset-krish0195?region=us-east-1&tab=objects
+
+Why have we created this bucket for keeping the training files
+
+
+B. Create Second Bucket (for model artifacts)
+1. AWS Console → S3 → “Create bucket”
+2. Bucket name: llm-model-artifacts-<yourname>
+3. Region = same as above
+4. Create a bucket
+
+bucket name 2 -
+
+	llm-model-artifacts-krish0196
+		folder name:models
+
+	https://us-east-1.console.aws.amazon.com/s3/buckets/llm-model-artifacts-krish0196?region=us-east-1&tab=objects
+sagewmaker:
+	notebook name:llm-finetune-notebook
+
+C. Verify and Note the paths
+
+s3://llm-finetune-dataset-krish0195/datasets/
+s3://llm-model-artifacts-krish0196/models/
+
+
+					STEP 3 — Create SageMaker Notebook Instance
+	
+https://us-east-1.console.aws.amazon.com/sagemaker/home?region=us-east-1#/notebooks-and-git-repos
+
+sagewmaker:
+	notebook name:llm-finetune-notebook
+	https://us-east-1.console.aws.amazon.com/sagemaker/home?region=us-east-1#/notebook-instances
+	notebook:https://us-east-1.console.aws.amazon.com/sagemaker/home?region=us-east-1#/notebook-instances/llm-finetune-notebook
+	https://us-east-1.console.aws.amazon.com/sagemaker/home?region=us-east-1#/notebook-instances/llm-finetune-notebook
+
+sagewmaker:
+	notebook name:llm-finetune-notebook
+
+Notebook:https://llm-finetune-notebook-ikqe.notebook.us-east-1.sagemaker.aws/lab/tree/finetuning/experiment.ipynb
+
+instruction finetuning:
+		
+***************************************************************************** 1.48 continue *****************************************************************
+
+1)uv init
+
+	llm-model-artifacts-krish0196
+		folder name:models
+
+
+		
+
+
